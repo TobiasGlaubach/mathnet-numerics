@@ -609,30 +609,6 @@ namespace MathNet.Numerics.LtiSystems
             return (y);
         }
 
-        // Todo: Implement FiltFilt
-        /*
-        /// <summary>
-        /// A wrapper for the StaticFilters.FiltFilt method using the internal a and b arrays
-        /// </summary>
-        /// <param name="data">The data to filter</param>
-        /// <param name="zi">initial state coefficients null for aotomatic generation via steady state solution</param>
-        /// <param name="padlen">the number of datapoints to pad at each side use less than 0 for Math.Max(a.Length, b.Length) * 3</param>
-        /// <returns>The filterd data</returns>
-        /// <remarks>
-        /// In order to prevent transients at the end or start of the sequence we have to pad it
-        /// The padding is done by rotating the sequence by 180° at the ends and append it to the data
-        /// </remarks>
-        public double[] FiltFilt(double[] data, double[] zi = null, int padlen = 0)
-        {
-            if (this.a == null || this.a.Length == 0)
-                throw new Exception("This transfer function has no a array with data");
-            if (this.b == null || this.b.Length == 0)
-                throw new Exception("This transfer function has no a array with data");
-
-            return StaticFilters.FiltFilt(data, this.a, this.b, zi, padlen);
-        }
-        */
-
         #region Dynamics
 
         /// <summary>
@@ -666,7 +642,11 @@ namespace MathNet.Numerics.LtiSystems
             return (ImpulseResponse);
         }
 
-
+        /// <summary>
+        /// Gets the frequency response for this transfer function with the requested number of points
+        /// </summary>
+        /// <param name="nPoints">the number of gridpoints to generate</param>
+        /// <returns>an array of complex values representing the complex frequency response</returns>
         public Complex[] Bode(int nPoints = 100)
         {
             // substituting z = exp(j * omega * Ts)
@@ -675,6 +655,13 @@ namespace MathNet.Numerics.LtiSystems
             return Bode(omega_vec);
         }
 
+
+        /// <summary>
+        /// Gets the frequency response and frequency gridpoints for this transfer function with the requested number of points
+        /// </summary>
+        /// <param name="nPoints">the number of gridpoints to generate</param>
+        /// <param name="omega_vec">the resulting frequency grid</param>
+        /// <returns>an array of complex values representing the complex frequency response</returns>
         public Complex[] Bode(int nPoints, out double[] omega_vec)
         {
             // substituting z = exp(j * omega * Ts)
@@ -684,6 +671,11 @@ namespace MathNet.Numerics.LtiSystems
             return Bode(omega_vec);
         }
 
+        /// <summary>
+        /// Gets the frequency response for this transfer function for the given frequency gridpoints - omega
+        /// </summary>
+        /// <param name="omega_vec">an array containing the frequency gridpoints - omega</param>
+        /// <returns>an array of complex values representing the complex frequency response</returns>
         public Complex[] Bode(double[] omega_vec)
         {
 
@@ -728,7 +720,7 @@ namespace MathNet.Numerics.LtiSystems
             return bodeVal;
         }
 
-        /// <summary> The poles resulting from the denominator  Polynomial root</summary>
+        /// <summary> The poles resulting from the denominator polynomial root</summary>
         public Complex[] GetPoles()
         {
             Polynomial a_poly = new Polynomial(a.Reverse());
@@ -736,7 +728,7 @@ namespace MathNet.Numerics.LtiSystems
             return r;
         }
 
-        /// <summary> The zeros resulting from the nominator  Polynomial root </summary>
+        /// <summary> The zeros resulting from the nominator polynomial root </summary>
         public Complex[] GetZeros()
         {
             Polynomial b_poly = new Polynomial(b.Reverse());
@@ -873,22 +865,30 @@ namespace MathNet.Numerics.LtiSystems
 
         #region displaying
         /// <summary>
-        /// 
+        /// make a string from this transfer function
         /// </summary>
         /// <returns></returns>
-        public string DispTF()
+        public string MakeTfString()
         {
-            return (DispTF(this.b, this.a, this.Name, this.variable.Substring(0, variable.Length - 1)));
+            return (MakeTfString(this.b, this.a, this.Name, this.variable.Substring(0, variable.Length - 1)));
         }
 
-        public string NumString()
+        /// <summary>
+        /// get a string representing the numerator
+        /// </summary>
+        /// <returns></returns>
+        public string MakeNumString()
         {
             var varStr = this.variable.Substring(0, variable.Length - 1);
             var num = b.Clone() as double[];
             return getFractString(num, varStr);
         }
 
-        public string DenString()
+        /// <summary>
+        /// get a string representing the denominator
+        /// </summary>
+        /// <returns></returns>
+        public string MakeDenString()
         {
             var varStr = this.variable.Substring(0, variable.Length - 1);
             var den = a.Clone() as double[];
@@ -942,7 +942,7 @@ namespace MathNet.Numerics.LtiSystems
         /// <param name="den"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static string DispTF(double[] num, double[] den, string name, string varStr = " q^-")
+        public static string MakeTfString(double[] num, double[] den, string name, string varStr = " q^-")
         {
 
             string strNum = getFractString(num, varStr);
