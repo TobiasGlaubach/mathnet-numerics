@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace MathNet.Numerics.LtiSystems
+namespace MathNet.Numerics.SystemModels
 {
     public interface IMimoSystemModel
     {
