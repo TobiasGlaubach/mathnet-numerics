@@ -420,6 +420,23 @@ namespace MathNet.Numerics.Statistics
         }
 
         /// <summary>
+        /// Estimates the median absolut deviation (|median(y - median(y)|) from the 
+        /// unsorted data array. Scale this number by 1.4826 if you want to use the 
+        /// mad as a consistent estimator for normal distributions.
+        /// WARNING: Works inplace and can thus causes the data array to be reordered.
+        /// </summary>
+        /// <param name="data">Sample array, no sorting is assumed. Will be reordered.</param>
+        public static double MedianAbsolutDeviation(double[] data)
+        {
+            var a = new double[data.Length];
+            Array.Copy(data, a, a.Length);
+            var med = MedianInplace(a);
+            for (int i = 0; i < a.Length; i++)
+                a[i] = a[i] - med;
+            return MedianInplace(a);
+        }
+
+        /// <summary>
         /// Estimates the p-Percentile value from the unsorted data array.
         /// If a non-integer Percentile is needed, use Quantile instead.
         /// Approximately median-unbiased regardless of the sample distribution (R8).

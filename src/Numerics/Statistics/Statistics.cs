@@ -820,6 +820,43 @@ namespace MathNet.Numerics.Statistics
         }
 
         /// <summary>
+        /// Estimates the median absolut deviation (|median(y - median(y)|) from the 
+        /// unsorted data array. Scale this number by 1.4826 if you want to use the 
+        /// mad as a consistent estimator for a normal distributions.
+        /// </summary>
+        /// <param name="data">The data sample sequence.</param>
+        public static double MedianAbsolutDeviation(this IEnumerable<double> data)
+        {
+            double[] array = data.ToArray();
+            return ArrayStatistics.MedianAbsolutDeviation(array);
+        }
+
+        /// <summary>
+        /// Estimates the median absolut deviation (|median(y - median(y)|) from the 
+        /// unsorted data array. Scale this number by 1.4826 if you want to use the 
+        /// mad as a consistent estimator for a normal distributions.
+        /// </summary>
+        /// <param name="data">The data sample sequence.</param>
+        public static float MedianAbsolutDeviation(this IEnumerable<float> data)
+        {
+            float[] array = data.ToArray();
+            return ArrayStatistics.MedianAbsolutDeviation(array);
+        }
+
+        /// <summary>
+        /// Estimates the median absolut deviation (|median(y - median(y)|) from the 
+        /// unsorted data array. Scale this number by 1.4826 if you want to use the 
+        /// mad as a consistent estimator for a normal distributions.
+        /// </summary>
+        /// <param name="data">The data sample sequence.</param>
+        public static double MedianAbsolutDeviation(this IEnumerable<double?> data)
+        {
+            double[] array = data.Where(d => d.HasValue).Select(d => d.Value).ToArray();
+            return ArrayStatistics.MedianAbsolutDeviation(array);
+        }
+
+
+        /// <summary>
         /// Estimates the tau-th quantile from the provided samples.
         /// The tau-th quantile is the data value where the cumulative distribution
         /// function crosses tau.

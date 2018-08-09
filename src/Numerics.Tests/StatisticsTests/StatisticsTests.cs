@@ -72,6 +72,7 @@ namespace MathNet.Numerics.UnitTests.StatisticsTests
             Assert.That(() => Statistics.HarmonicMean(data), Throws.Exception);
             Assert.That(() => Statistics.GeometricMean(data), Throws.Exception);
             Assert.That(() => Statistics.Median(data), Throws.Exception);
+            Assert.That(() => Statistics.MedianAbsolutDeviation(data), Throws.Exception);
             Assert.That(() => Statistics.Quantile(data, 0.3), Throws.Exception);
             Assert.That(() => Statistics.Variance(data), Throws.Exception);
             Assert.That(() => Statistics.StandardDeviation(data), Throws.Exception);
@@ -141,6 +142,7 @@ namespace MathNet.Numerics.UnitTests.StatisticsTests
             Assert.DoesNotThrow(() => Statistics.HarmonicMean(data));
             Assert.DoesNotThrow(() => Statistics.GeometricMean(data));
             Assert.DoesNotThrow(() => Statistics.Median(data));
+            Assert.DoesNotThrow(() => Statistics.MedianAbsolutDeviation(data));
             Assert.DoesNotThrow(() => Statistics.Quantile(data, 0.3));
             Assert.DoesNotThrow(() => Statistics.Variance(data));
             Assert.DoesNotThrow(() => Statistics.StandardDeviation(data));
